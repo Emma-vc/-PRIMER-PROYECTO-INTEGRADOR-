@@ -2,9 +2,9 @@ import random
 import time
 
 print()
-print("☠️"*50)
-print("JUEGO DEL AHORCADO".center(50))
-print("☠️"*50)
+print("☠️"*60)
+print("JUEGO DEL AHORCADO".center(60))
+print("☠️"*60)
 
 texto="\n Podes tener 6 intentos fallidos \n" \
 "y dispones de solo 1 minuto para adivinar la palabra 🤓 ✏️"
@@ -15,7 +15,7 @@ Categorias = ["Cuentos infantiles", "Peliculas clasicas", "Anatomia", "Colores"]
 
 contenidos=[["Cenicienta","Caperucita", "Hansel y Gretel","Pinocho","El patito feo", "Blancanieves", "Los tres cerditos","Pulgarcito"],
 ["Psicosis", "El resplandor", "La vuelta al mundo en 80 dias", "La guerra de las galaxias", "El mago de oz", "Willi wonka", "El retrato de Dorian Grey"],
-["corazon", "craneo","humero","tiroides", "ovarios","faringe","radio","higado","Bazo","Estomago","laringe", "vesicula biliar", "ileon","pancreas","humor vitreo"],
+["corazon", "craneo","humero","tiroides", "ovarios","faringe","radio","higado","femur","Bazo","Estomago","laringe", "vesicula biliar"],
 ["rojo","amarillo","azul","naranja","verde","violeta","magenta","cian","gris","rosa","dorado","plateado","blanco","negro"]]
 
                 #categorias y seleccion
@@ -27,25 +27,49 @@ for i, categoria in enumerate(Categorias,start=1):
 opcion = int(input("\nIngrese la opcion 1-4: "))
 
 if opcion >=1 and opcion <= len(Categorias):
-  print(f"La Categoria seleccionada es {Categorias [opcion -1]}")
+  print(f"La Categoria seleccionada es {Categorias [opcion -1]}")   
 
 def categoria_seleccionada(opcion):
     p_elegida=random.choice(contenidos [opcion - 1])
     return p_elegida
 
-#no mostrar!! es solo para saber la palabra que eligio el random
+#no mostrar!! es solo para saber la palabra que eligio el random  
 palabra_random=categoria_seleccionada (opcion)
 print(palabra_random)
 
           #Comienzo del juego ingreso de letras y comparacion
 
 intentos=0 #contador
-intentos_restantes= 6
+intentos_maximos=6
+intentos_restantes= intentos_maximos
 total_letras= ["_" ]*len(palabra_random)
 letras_utilizadas=[ ]
 palabra_oculta= palabra_random
 
-while intentos_restantes > 0:
+#tiempo del juego
+limite_tiempo= 60
+tiempo_actual=time.time()
+ 
+
+def iniciar_reloj():
+ global inicio_t
+ inicio_t= time.time()
+
+def fin_tiempo():
+  tiempo_actual=time.time()
+  tiempo_transcurrido=tiempo_actual - inicio_t
+  return tiempo_transcurrido== limite_tiempo
+
+def intentos_terminados():
+  return intentos_restantes<= 0
+  
+
+def jugar():
+ global inicio_t,intentos_restantes,intentos
+ iniciar_reloj()  
+ tiempo_transcurrido= tiempo_actual - inicio_t
+ while intentos_restantes > 0:
+      
       letra=input("\nLetra ingresada: ").upper()
       print("Palabra: " + " ".join(total_letras))
 
@@ -66,6 +90,10 @@ while intentos_restantes > 0:
       letras_utilizadas.append(letra)
       print("Letras usadas: " + " ".join(letras_utilizadas))
 
-      if intentos_restantes== 0:
-       print(f"❌Partida perdida‼️☠️ ❌ \n La palabra oculta es {palabra_oculta} ")
+      if fin_tiempo() or intentos_terminados():
+       print(f"❌💀Partida perdida ‼️☠️❌ \n La palabra oculta es {palabra_oculta} ")
        break
+      if "_" not in total_letras:
+        print(f"PARTIDA GANADA 🎉🏆🥇🎉")
+        break
+jugar()
