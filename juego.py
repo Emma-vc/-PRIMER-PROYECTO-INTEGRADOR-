@@ -15,7 +15,7 @@ Categorias = ["Cuentos infantiles", "Peliculas clasicas", "Anatomia", "Colores"]
 
 contenidos=[["Cenicienta","Caperucita", "Hansel y Gretel","Pinocho","El patito feo", "Blancanieves", "Los tres cerditos","Pulgarcito"],
 ["Psicosis", "El resplandor", "La vuelta al mundo en 80 dias", "La guerra de las galaxias", "El mago de oz", "Willi wonka", "El retrato de Dorian Grey"],
-["corazon", "craneo","humero","tiroides", "ovarios","faringe","radio","higado","femur","Bazo","Estomago","laringe", "vesicula biliar"],
+["corazon", "craneo","humero","tiroides", "ovarios","faringe","radio","higado","Bazo","Estomago","laringe", "vesicula biliar"],
 ["rojo","amarillo","azul","naranja","verde","violeta","magenta","cian","gris","rosa","dorado","plateado","blanco","negro"]]
 
                 #categorias y seleccion
@@ -24,8 +24,17 @@ print(f"\n Seleccione una categoria: \n")
 for i, categoria in enumerate(Categorias,start=1):
     print(f"{i}.{categoria}")
 
-opcion = int(input("\nIngrese la opcion 1-4: "))
-
+#manejo de errores al ingreso de opciones
+while True:
+     try:
+       opcion = int(input("\nIngrese la opcion 1-4: "))
+       if opcion <=1 or opcion <=4:
+         break
+       else:
+         print("Numero fuera de rango") 
+     except ValueError:
+       print("Por favor!, ingrese un numero valido")
+       
 if opcion >=1 and opcion <= len(Categorias):
   print(f"La Categoria seleccionada es {Categorias [opcion -1]}")   
 
@@ -45,6 +54,7 @@ intentos_restantes= intentos_maximos
 total_letras= ["_" ]*len(palabra_random)
 letras_utilizadas=[ ]
 palabra_oculta= palabra_random
+total_letras=["_" if c!=" " else " " for c in palabra_oculta]
 
 #tiempo del juego
 limite_tiempo= 60
@@ -69,10 +79,9 @@ def jugar():
  iniciar_reloj()  
  tiempo_transcurrido= tiempo_actual - inicio_t
  while intentos_restantes > 0:
-      
-      letra=input("\nLetra ingresada: ").upper()
       print("Palabra: " + " ".join(total_letras))
-
+      letra=input("\nLetra ingresada: ").upper()
+      
       if letra in palabra_oculta.upper():
         for i, l in enumerate(palabra_oculta.upper()):
            if l == letra:
@@ -91,9 +100,11 @@ def jugar():
       print("Letras usadas: " + " ".join(letras_utilizadas))
 
       if fin_tiempo() or intentos_terminados():
-       print(f"❌💀Partida perdida ‼️☠️❌ \n La palabra oculta es {palabra_oculta} ")
+       print(f"❌ 💀 Partida perdida ‼️ ☠️ ❌ \n La palabra oculta es {palabra_oculta} ")
        break
       if "_" not in total_letras:
+        print("Palabra: " + " ".join(total_letras))
         print(f"PARTIDA GANADA 🎉🏆🥇🎉")
         break
 jugar()
+
