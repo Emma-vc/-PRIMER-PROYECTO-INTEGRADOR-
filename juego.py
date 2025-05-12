@@ -42,9 +42,8 @@ def categoria_seleccionada(opcion):
     p_elegida=random.choice(contenidos[opcion - 1])
     return p_elegida
 
-#no mostrar!! es solo para saber la palabra que eligio el random  
 palabra_random=categoria_seleccionada (opcion)
-print(palabra_random)
+###print(palabra_random) #no mostrar!! es solo para saber la palabra que eligio el random
 
           #Comienzo del juego ingreso de letras y comparacion
 
